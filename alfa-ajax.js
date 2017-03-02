@@ -12,7 +12,7 @@
     JSON is default data type for .get(), .put() and .mode() using XmlHttpRequest
 
     JSONP is for .jsonp() using <script> tag
-
+    JSONP is based on http://stackoverflow.com/users/1212596/paul-draper
  */
 var alfaAjax = (function () {
 
