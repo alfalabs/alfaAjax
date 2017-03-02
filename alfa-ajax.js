@@ -91,9 +91,6 @@ var alfaAjax = (function () {
         return cfg;
     }
 
-    //if (cfg.type === 'jsonp') { jsonpreq(url, cfg, successCb, errorCb); }
-    //else {                     xhrequest(url, cfg, successCb, errorCb); }
-
     ////////////////
 
 
