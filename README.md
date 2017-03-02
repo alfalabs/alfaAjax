@@ -23,8 +23,9 @@ above methods use `XmlHttpRequest` and default data type JSON
   var defaults = {
       mode: 'GET',
       type: 'json',
-      timeout: 2500,
+      timeout: 25000,
       contentType: 'application/json',
       data: null
   }
 ```
+See sample code how to use, in `alfa-ajax.html` also sample partial code for NodeJS server is provided in `app.js`
