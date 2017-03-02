@@ -97,43 +97,6 @@ var alfaAjax = (function () {
     ////////////////
 
 
-    function jsonpreq_OLD(url, cfg, successCb, errorCb) {
-        var log = _log('jsonpreq');
-
-        var rqt = alfaTimeout('jsonpreq', cfg.timeout, function () {
-            if (typeof errorCb === 'function') { errorCb({ message: 'TIMEOUT: ' + cfg.timeout + ' ' + url }); }
-            else { log('TIMEOUT: ' + cfg.timeout + ' ' + url, 'w') }
-            return;
-        });
-
-        var callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
-
-        window[callbackName] = function (data) {
-            delete window[callbackName];
-            document.body.removeChild(script);
-
-            if (rqt.isTimedOut(url)) { return; }  // exit without calling next() because onTimedOut() already did it
-            successCb(data);
-        };
-
-
-        var script = document.createElement('script');
-        document.body.appendChild(script);
-
-        script.onerror = function (err) {
-            document.body.removeChild(script);
-            if (rqt.isTimedOut(url)) { return; }  // exit without calling next() because onTimedOut() already did it
-            if (typeof errorCb === 'function') { errorCb({ message: '[jsonpreq] ERR: ' + ' ' + url }); }
-        }
-
-        //try {
-        script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName; // causes uncatchable error when src is bad
-        //} catch (e) { console.log('zl\'apany!')}
-    }
-
-
-
-
     function xhrequest(url, cfg, successCb, errorCb) {
         var log = _log('xhrequest');
 
