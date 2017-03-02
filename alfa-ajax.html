@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>alfa-ajax</title>
+    <script src="js/alfa-ajax.js"></script>
+    <style>
+        body {margin: 10px 30px; font-family:Tahoma;}
+        h1, h2, h3{font-weight:normal;}
+    </style>
+</head>
+<body>
+    <script>
+        function _log(moduleName) {
+            var _moduleName = moduleName;
+            return function (msg, m) {
+                var txt = '[' + _moduleName + '] ';
+                if (typeof msg === 'string') { txt = txt + msg; }
+                else { txt = txt + ' obj:' }
+                if (m === 'e') console.error(txt);
+                else if (m === 'w') console.warn(txt);
+                else console.log(txt);
+                if (typeof msg === 'object') console.log(msg);
+            }
+        }
+        var log = _log('page-html');
+    </script>
+
+    <h3>alfalabs.net</h3>
+
+    <h2>JSON P</h2>
+
+    <a href="#" onclick="
+    alfaAjax.jsonp('/jsonp', null,
+        function (data) { log(data); },
+        function (err) { log(err.message, 'e') }
+    );
+    ">alfaAjax.jsonp()</a> <br /><br /> 
+
+
+    <a href="#" onclick="
+    alfaAjax.jsonp('/jsonp/9000', { timeout: 2000 },
+        function (data) { log(data); },
+        function (err) { log(err.message, 'e') }
+    );
+    ">alfaAjax.jsonp()</a> delayed response from server <br /><br /> 
+
+    <a href="#" onclick="
+    alfaAjax.jsonp('/yahoo', null,
+        function (data) { log(data); },
+        function (err) { log(err.message, 'e') }
+    );
+    ">alfaAjax.jsonp()</a> bad url<br /><br /> 
+
+    <a href="#" onclick="
+    alfaAjax.jsonp('/jsonp/baddata', null,
+        function (data) { log(data); },
+        function (err) { log(err.message, 'e') }
+    );
+    ">alfaAjax.jsonp()</a> bad data from server<br /><br /> 
+
+
+    <h2>http request</h2>
+
+    <a href="#" onclick="
+    alfaAjax.get('/ajax', null,
+                function (data) { log(data) },
+                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+            );
+    ">alfaAjax.get</a> <br /><br />
+
+    <a href="#" onclick="
+    alfaAjax.get('/ajax/9000', { timeout: 2000 },
+                function (data) { log(data) },
+                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+            );
+    ">alfaAjax.get()</a> delayed response from server <br /><br />
+
+   
+    <a href="#" onclick="
+    alfaAjax.get('/ajax/baddata', null,
+                function (data) { log(data) },
+                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+            );
+    ">alfaAjax.get()</a> with returned bad data <br /><br />
+
+    <a href="#" onclick="
+    alfaAjax.post('/ajax', {data: {name:'page', val:456, is:false}},
+                function (data) { log(data) },
+                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+            );
+    ">alfaAjax.post() </a> <br /><br />
+
+    <a href="#" onclick="
+    alfaAjax.post('/ajax', {data: '{name:\'page\', val:456, is:false}'},
+                function (data) { log(data) },
+                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+            );
+    ">alfaAjax.post()</a>  with bad data posted<br /><br />
+
+    <a href="#" onclick="
+    alfaAjax.post('/yahoo', {data: {name:'page', val:456, is:false}},
+                function (data) { log(data) },
+                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+            );
+    ">alfaAjax.post()</a>  with bad url<br /><br />
+
+    <a href="#" onclick="
+    alfaAjax.post('http://www.nonexisitng.server', {data: {name:'page', val:456, is:false}},
+                function (data) { log(data) },
+                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+            );
+    ">alfaAjax.post()</a>  calling non existing server<br /><br />
+
+ 
+   
+</body>
+</html>
