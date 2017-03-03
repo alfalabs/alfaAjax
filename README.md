@@ -34,4 +34,4 @@ options and defaults:
   }
 ```
   
-See sample code how to use, in `alfa-ajax.html` also sample partial code for NodeJS server is provided in `app.js`
+See sample code how to use, in [`alfa-ajax.html`](https://github.com/alfalabs/alfaAjax/blob/master/alfa-ajax.js) also sample partial code for NodeJS server is provided in [`app.js`](https://github.com/alfalabs/alfaAjax/blob/master/app.js)
