@@ -1,4 +1,4 @@
-﻿/** alfa-ajax.js    (C) alfalabs.net 17.3.2a
+﻿/** alfa-ajax.js  (C)MIT alfalabs.net 17.3.3
 
     alfaAjax.get( url, options, successCb, errorCb)
 
@@ -22,23 +22,26 @@ var alfaAjax = (function () {
     var me = {};
 
     me.get = function (url, options, successCb, errorCb) {
+        if (typeof options === 'function') { errorCb = successCb; successCb = options; options = {}; }
         var cfg = setCfg(options);
         cfg.mode = 'GET';
         xhrequest(url, cfg, successCb, errorCb);
     }
 
     me.post = function (url, options, successCb, errorCb) {
+        if (typeof options === 'function') { errorCb = successCb; successCb = options; options = {}; }
         var cfg = setCfg(options);
         cfg.mode = 'POST';
         xhrequest(url, cfg, successCb, errorCb);
     }
     me.mode = function (url, options, successCb, errorCb) {
+        if (typeof options === 'function') { errorCb = successCb; successCb = options; options = {}; }
         var cfg = setCfg(options);
         xhrequest(url, cfg, successCb, errorCb);
     }
 
-
     me.jsonp = function (url, options, successCb, errorCb) {
+        if (typeof options === 'function') { errorCb = successCb; successCb = options; options = {}; }
         var cfg = setCfg(options);
 
         var log = _log('jsonpreq');
@@ -55,7 +58,7 @@ var alfaAjax = (function () {
             delete window[callbackName];
             document.body.removeChild(script);
 
-            if (rqt.isTimedOut(url)) { return; }  // exit without calling next() because onTimedOut() already did it
+            if (rqt.isTimedOut(url)) { return; }  // exit without calling callback() because onTimedOut() already did it
             successCb(data);
         };
 
@@ -65,7 +68,7 @@ var alfaAjax = (function () {
 
         script.onerror = function (err) {
             document.body.removeChild(script);
-            if (rqt.isTimedOut(url)) { return; }  // exit without calling next() because onTimedOut() already did it
+            if (rqt.isTimedOut(url)) { return; }  // exit without calling callback() because onTimedOut() already did it
             if (typeof errorCb === 'function') { errorCb({ message: '[jsonpreq] ERR3: ' + ' ' + url }); }
         }
 
@@ -105,7 +108,7 @@ var alfaAjax = (function () {
 
         var rqt = alfaTimeout('xhrequest', cfg.timeout, function () {
             xhr.abort();
-            if (typeof errorCb === 'function') { errorCb({ message: 'xhr TIMEOUT: ' + cfg.timeout + 'ms ' + url, xhr }); }
+            if (typeof errorCb === 'function') { errorCb({ message: '[xhrequest] TIMEOUT: ' + cfg.timeout + 'ms ' + url, xhr }); }
             else { log('TIMEOUT: ' + cfg.timeout + ' ' + url, 'w') }
         });
 
@@ -118,7 +121,9 @@ var alfaAjax = (function () {
                 if (xhr.status == 200) {
                     if (rqt.isTimedOut('200 '+url)) { return; } //rqt.responded = true;
                     var data;
-                    if (cfg.type === 'json') { data = JSON.parse(xhr.response); } else { data = xhr.response; }
+                    if (cfg.type === 'json') {
+                        try { data = JSON.parse(xhr.response); } catch (e) { errorCb({ message: '[xhrequest] ERR4 ' + e.message, xhr }); return; } 
+                    } else { data = xhr.response; }
 
                     successCb(data);
                 }

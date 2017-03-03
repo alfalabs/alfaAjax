@@ -31,6 +31,8 @@
 
     <h2>JSON P</h2>
 
+    
+
     <a href="#" onclick="
     alfaAjax.jsonp('/jsonp', null,
         function (data) { log(data); },
@@ -40,76 +42,83 @@
 
 
     <a href="#" onclick="
-    alfaAjax.jsonp('/jsonp/9000', { timeout: 2000 },
+    alfaAjax.jsonp('/jsonp/6000', { timeout: 2000 },
         function (data) { log(data); },
         function (err) { log(err.message, 'e') }
     );
     ">alfaAjax.jsonp()</a> delayed response from server <br /><br /> 
 
     <a href="#" onclick="
-    alfaAjax.jsonp('/yahoo', null,
+    alfaAjax.jsonp('/yahoo', 
         function (data) { log(data); },
         function (err) { log(err.message, 'e') }
     );
     ">alfaAjax.jsonp()</a> bad url<br /><br /> 
 
     <a href="#" onclick="
-    alfaAjax.jsonp('/jsonp/baddata', null,
+    alfaAjax.jsonp('/jsonp/0/baddata', 
         function (data) { log(data); },
         function (err) { log(err.message, 'e') }
     );
     ">alfaAjax.jsonp()</a> bad data from server<br /><br /> 
 
+    <a href="#" onclick="
+    alfaAjax.jsonp('http://www.nonexisitng.server',
+        function (data) { log(data); },
+        function (err) { log(err.message, 'e') }
+    );
+    ">alfaAjax.jsonp()</a> calling non existing server<br /><br /> 
+
 
     <h2>http request</h2>
-
+    
     <a href="#" onclick="
-    alfaAjax.get('/ajax', null,
+    alfaAjax.get('/ajax', 
                 function (data) { log(data) },
-                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+                function (err)  { log(err.message + ' ' + (err.xhr ? 'status:'+err.xhr.status : 'no xhr'),'e') }
             );
     ">alfaAjax.get</a> <br /><br />
 
     <a href="#" onclick="
-    alfaAjax.get('/ajax/9000', { timeout: 2000 },
+    alfaAjax.get('/ajax/6000', { timeout: 2000 },
                 function (data) { log(data) },
-                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+                function (err)  { log(err.message + ' ' + (err.xhr ? 'status:'+err.xhr.status : 'no xhr'),'e') }
             );
     ">alfaAjax.get()</a> delayed response from server <br /><br />
 
    
     <a href="#" onclick="
-    alfaAjax.get('/ajax/baddata', null,
+    alfaAjax.get('/ajax/0/baddata', 
                 function (data) { log(data) },
-                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+                function (err)  { log(err.message + ' ' + (err.xhr ? 'status:'+err.xhr.status : 'no xhr'),'e') }
             );
     ">alfaAjax.get()</a> with returned bad data <br /><br />
 
     <a href="#" onclick="
     alfaAjax.post('/ajax', {data: {name:'page', val:456, is:false}},
                 function (data) { log(data) },
-                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+                function (err)  { log(err.message + ' ' + (err.xhr ? 'status:'+err.xhr.status : 'no xhr'),'e') }
             );
     ">alfaAjax.post() </a> <br /><br />
 
     <a href="#" onclick="
     alfaAjax.post('/ajax', {data: '{name:\'page\', val:456, is:false}'},
                 function (data) { log(data) },
-                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+                function (err)  { log(err.message + ' ' + (err.xhr ? 'status:'+err.xhr.status : 'no xhr'),'e') }
             );
     ">alfaAjax.post()</a>  with bad data posted<br /><br />
 
     <a href="#" onclick="
     alfaAjax.post('/yahoo', {data: {name:'page', val:456, is:false}},
                 function (data) { log(data) },
-                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+                function (err)  { log(err.message + ' ' + (err.xhr ? 'status:'+err.xhr.status : 'no xhr'),'e') }
             );
     ">alfaAjax.post()</a>  with bad url<br /><br />
 
     <a href="#" onclick="
     alfaAjax.post('http://www.nonexisitng.server', {data: {name:'page', val:456, is:false}},
                 function (data) { log(data) },
-                function (err)  { log(err.message + ' ' + (err.xhr ? err.xhr.status : 'no xhr'),'e') }
+                function (err)  { log(err.message + ' ' + (err.xhr ? 'status:'+err.xhr.status : 'no xhr'),'e') }
             );
     ">alfaAjax.post()</a>  calling non existing server<br /><br />
 
