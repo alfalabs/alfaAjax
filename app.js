@@ -18,7 +18,7 @@ app.get('/jsonp/:timeout?/:bad?', function (req, res) {
         data = function () { };
     } else { data = { txt: 'GET: response from server', val: 234 }}
 
-    if (req.params.timeout) { setTimeout(function () { res.jsonp(data); console.log('responded: ' + req.originalUrl);}, req.params.timeout); }
+    if (req.params.timeout && req.params.timeout>0) { setTimeout(function () { res.jsonp(data); console.log('responded: ' + req.originalUrl);}, req.params.timeout); }
     else { res.jsonp(data); }
     
 });
@@ -31,7 +31,7 @@ app.get('/ajax/:timeout?/:bad?', function (req, res) {
     } else { data = { txt: 'GET: response from server', val: 234 } }
     console.log(data);
 
-    if (req.params.timeout) { setTimeout(function () { res.jsonp(data); console.log('responded: ' + req.originalUrl); }, req.params.timeout); }
+    if (req.params.timeout && req.params.timeout > 0) { setTimeout(function () { res.jsonp(data); console.log('responded: ' + req.originalUrl); }, req.params.timeout); }
     else { res.jsonp(data); }
 });
 app.post('/ajax', function (req, res) {
