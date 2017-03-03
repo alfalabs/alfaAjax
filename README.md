@@ -6,6 +6,10 @@ I love jQuery!<br>$.Ajax() is great, but it was dropped from jquery.slim.js buil
 ```javascript
 alfaAjax.mode(url [,options] ,successCb [,errorsCb]);
 ```
+`url {String}` - url to call<br>
+`options {Object}` - optoins, see below. (optional argument)<br>
+`successCb {Function}` - callback function returning response data<br>
+`errorCb {Function}` - callback function returning error data  (optional argument, if not present, errors are logged to console)<br>
 
 Each method has two callbacks: `sucessCb` and `errorCb`. On timeout event is handled by `errorCb`
 
