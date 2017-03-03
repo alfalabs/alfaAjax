@@ -1,5 +1,6 @@
 # alfaAjax
-JavaScript replacement of jQuery.ajax()
+### JavaScript ES3 replacement of jQuery.ajax()
+I love jQuery!<br>$.Ajax() is great, but it was dropped from jquery.slim.js build. I need a basic functionality to handle JSON communication with server, so here it is. Please report any issues with it.<br><br>
 
 Each method has two callbacks: `sucessCb` and `errorCb`. On timeout event is handled by `errorCb`
 
