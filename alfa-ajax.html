@@ -34,12 +34,11 @@
     
 
     <a href="#" onclick="
-    alfaAjax.jsonp('/jsonp', null,
+    alfaAjax.jsonp('/jsonp', 
         function (data) { log(data); },
         function (err) { log(err.message, 'e') }
     );
     ">alfaAjax.jsonp()</a> <br /><br /> 
-
 
     <a href="#" onclick="
     alfaAjax.jsonp('/jsonp/6000', { timeout: 2000 },
@@ -61,6 +60,9 @@
         function (err) { log(err.message, 'e') }
     );
     ">alfaAjax.jsonp()</a> bad data from server<br /><br /> 
+
+    <a href="#" onclick="alfaAjax.jsonp('/jsonp/0/baddata',  function (data) { log(data); }  );">alfaAjax.jsonp()</a> bad data from server, no errorCb<br /><br />
+
 
     <a href="#" onclick="
     alfaAjax.jsonp('http://www.nonexisitng.server',
@@ -93,6 +95,9 @@
                 function (err)  { log(err.message + ' ' + (err.xhr ? 'status:'+err.xhr.status : 'no xhr'),'e') }
             );
     ">alfaAjax.get()</a> with returned bad data <br /><br />
+
+    <a href="#" onclick="alfaAjax.get('/ajax/0/baddata', function (data) { log(data) } ); ">alfaAjax.get</a> with returned bad data, no errorCb<br /><br />
+
 
     <a href="#" onclick="
     alfaAjax.post('/ajax', {data: {name:'page', val:456, is:false}},

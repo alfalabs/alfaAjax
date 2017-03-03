@@ -1,4 +1,4 @@
-﻿/** alfa-ajax.js  (C)MIT alfalabs.net 17.3.3
+﻿/** alfa-ajax.js  (C)MIT alfalabs.net 17.3.3a
 
     alfaAjax.get( url, options, successCb, errorCb)
 
@@ -17,7 +17,7 @@
 
  */
 var alfaAjax = (function () {
-
+    'use strict';
 
     var me = {};
 
@@ -46,9 +46,15 @@ var alfaAjax = (function () {
 
         var log = _log('jsonpreq');
 
+        var errorCb_notcalled = true;
+        function callErrorCb(msg) {
+            if (typeof errorCb === 'function' && errorCb_notcalled) errorCb(msg);
+            else log(msg, 'e');
+            errorCb_notcalled = false;
+        }
+
         var rqt = alfaTimeout('jsonpreq', cfg.timeout, function () {
-            if (typeof errorCb === 'function') { errorCb({ message: 'jsonp TIMEOUT: ' + cfg.timeout + 'ms ' + url }); }
-            else { log('TIMEOUT: ' + cfg.timeout + ' ' + url, 'w') }
+            callErrorCb({ message: 'jsonpreq TIMEOUT: ' + cfg.timeout + 'ms ' + url }); 
             return;
         });
 
@@ -69,7 +75,7 @@ var alfaAjax = (function () {
         script.onerror = function (err) {
             document.body.removeChild(script);
             if (rqt.isTimedOut(url)) { return; }  // exit without calling callback() because onTimedOut() already did it
-            if (typeof errorCb === 'function') { errorCb({ message: '[jsonpreq] ERR3: ' + ' ' + url }); }
+            callErrorCb( { message: '[jsonpreq] ERR3: ' + ' ' + url }); 
         }
 
         //try {
@@ -108,9 +114,15 @@ var alfaAjax = (function () {
 
         var rqt = alfaTimeout('xhrequest', cfg.timeout, function () {
             xhr.abort();
-            if (typeof errorCb === 'function') { errorCb({ message: '[xhrequest] TIMEOUT: ' + cfg.timeout + 'ms ' + url, xhr }); }
-            else { log('TIMEOUT: ' + cfg.timeout + ' ' + url, 'w') }
+            callErrorCb({ message: '[xhrequest] TIMEOUT: ' + cfg.timeout + 'ms ' + url, xhr }); 
         });
+
+        var errorCb_notcalled = true;
+        function callErrorCb(msg) {
+            if (typeof errorCb === 'function' && errorCb_notcalled) errorCb(msg);
+            else log(msg, 'e');
+            errorCb_notcalled = false;
+        }
 
         //xhr.timeout = cfg.timeout;
         //xhr.ontimeout = function (xhr) { if (typeof errorCb === 'function') errorCb({ message: 'TIMEOUT: ' + cfg.timeout, xhr }) } <-- fires TOO LATE, after error callback !!!
@@ -122,21 +134,20 @@ var alfaAjax = (function () {
                     if (rqt.isTimedOut('200 '+url)) { return; } //rqt.responded = true;
                     var data;
                     if (cfg.type === 'json') {
-                        try { data = JSON.parse(xhr.response); } catch (e) { errorCb({ message: '[xhrequest] ERR4 ' + e.message, xhr }); return; } 
+                        try { data = JSON.parse(xhr.response); } catch (e) { callErrorCb({ message: '[xhrequest] ERR4 ' + e.message, xhr }); return; } 
                     } else { data = xhr.response; }
 
                     successCb(data);
                 }
                 else {
                     if (rqt.isTimedOut()) { return; }  // exit without calling errorCb because onTimedOut() already did it
-                    if (typeof errorCb === 'function') errorCb({ message: '[xhrequest] ERR1 ' + url, xhr })
+                    callErrorCb({ message: '[xhrequest] ERR1 ' + url, xhr })
                 }
             }
         };
 
         xhr.onerror = function (err) {
-            if (typeof errorCb === 'function') errorCb({ message: '[xhrequest] ERR2 ' + url, err });
-            else { log(err, 'e'); }
+            callErrorCb({ message: '[xhrequest] ERR2 ' + url, err });
         }
 
         xhr.open(cfg.mode, url, true);
@@ -191,7 +202,7 @@ var alfaAjax = (function () {
         return function (msg, m) {
             var txt = '[' + _moduleName + '] ';
             if (typeof msg === 'string') { txt = txt + msg; }
-            else { txt = txt + ' obj:' }
+            else { txt = txt + ' message object below:' }
             if (m === 'e') console.error(txt);
             else if (m === 'w') console.warn(txt);
             else console.log(txt);
