@@ -4,7 +4,7 @@ I love jQuery!<br>$.Ajax() is great, but it was dropped from jquery.slim.js buil
 
 ### Syntax
 ```javascript
-alfaAjax.mode(url, [options,] successCb, errorsCb)
+alfaAjax.mode(url [,options] ,successCb [,errorsCb]);
 ```
 
 Each method has two callbacks: `sucessCb` and `errorCb`. On timeout event is handled by `errorCb`
