@@ -1,4 +1,4 @@
-﻿/** alfa-ajax.js  (C)MIT alfalabs.net 17.3.3a
+﻿/** alfa-ajax.js  (C)MIT alfalabs.net 17.3.20
 
     alfaAjax.get( url, options, successCb, errorCb)
 
@@ -8,10 +8,14 @@
 
     alfaAjax.jsonp( url, options, successCb, errorCb)
 
+    alfaAjax.page (url, options) - non AJAX call posting data to server and getting a web page in response
 
     JSON is default data type for .get(), .put() and .mode() using XmlHttpRequest
 
     JSONP is for .jsonp() using <script> tag
+
+    to get a page in response:
+    alfaAjax.post( url, {responseType:'html'}, function(data){document.write(data)}, errorCb)
 
     JSONP is based on http://stackoverflow.com/users/1212596/paul-draper
 
@@ -39,6 +43,36 @@ var alfaAjax = (function () {
         var cfg = setCfg(options);
         xhrequest(url, cfg, successCb, errorCb);
     }
+
+    me.page = function (url, options, successCb, errorCb) {
+
+        if (typeof options === 'function') { errorCb = successCb; successCb = options; options = {}; }
+        var cfg = setCfg(options);
+
+        var log = _log('ajaxform');
+        var form = document.createElement('form');
+        var inp = document.createElement('input');
+        inp.setAttribute('type', 'hidden');
+        inp.setAttribute('name', 'data');
+        inp.value = JSON.stringify(cfg.data);
+        form.appendChild(inp);
+        document.body.appendChild(form);
+
+
+        form.onerror = function (err) {
+            document.body.removeChild(form);
+            ////if (rqt.isTimedOut(url)) { return; }  // exit without calling callback() because onTimedOut() already did it
+            callErrorCb({ message: '[form] ERR5: ' + ' ' + url });
+        }
+
+        form.setAttribute('method', 'POST');
+        form.setAttribute('action', url);
+       
+
+        form.submit();
+
+        document.body.removeChild(form);
+    };
 
     me.jsonp = function (url, options, successCb, errorCb) {
         if (typeof options === 'function') { errorCb = successCb; successCb = options; options = {}; }
@@ -133,7 +167,7 @@ var alfaAjax = (function () {
                 if (xhr.status == 200) {
                     if (rqt.isTimedOut('200 '+url)) { return; } //rqt.responded = true;
                     var data;
-                    if (cfg.type === 'json') {
+                    if (cfg.type === 'json' & cfg.responseType!=='html') {
                         try { data = JSON.parse(xhr.response); } catch (e) { callErrorCb({ message: '[xhrequest] ERR4 ' + e.message, xhr }); return; } 
                     } else { data = xhr.response; }
 
