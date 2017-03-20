@@ -42,5 +42,10 @@ options and defaults:
       timeout: 25000
   }
 ```
-  
+- - -
+```javascript
+alfaAjax.page(url, options) // options={data: myDdataObject}
+```
+this is not an AJAX method, it passes data to server and gets a web page in response,<br/> like `<form method="POST" action="`<i>url</i>`">` On server side, the data arrives as JSON and has to be parsed: `JSON.parse(req.body.data)`
+- - - 
 See sample code how to use, in [`alfa-ajax.html`](https://github.com/alfalabs/alfaAjax/blob/master/alfa-ajax.html) also sample partial code for NodeJS server is provided in [`app.js`](https://github.com/alfalabs/alfaAjax/blob/master/app.js)
